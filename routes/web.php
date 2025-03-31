@@ -3,6 +3,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ParametroController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,3 +33,7 @@ Route::get('/registro-diario', function () {
 
 Route::resource('parametros', ParametroController::class);
 Route::delete('/parametros/{fecha}', [ParametroController::class, 'destroy'])->name('parametros.destroy');
+Route::get('/validar-fecha/{fecha}', function($fecha) {
+    $exists = DB::table('parametros')->where('fecha', $fecha)->exists();
+    return response()->json(['exists' => $exists]);
+});

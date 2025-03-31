@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ParametroRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ParametroController extends Controller
@@ -49,6 +50,14 @@ class ParametroController extends Controller
      */
     public function store(ParametroRequest $request): RedirectResponse
     {
+        // Verificar si ya existe un registro con la misma fecha
+        $fecha = $request->input('fecha');  // O el nombre del campo correspondiente
+
+        $exists = DB::table('parametros')->where('fecha', $fecha)->exists();
+
+        if ($exists) {
+            return redirect()->back()->withErrors(['fecha' => 'La fecha ya está registrada.'])->withInput();
+        }
         // Recorremos las series de datos dinámicos (hora, ce, ph, etc.)
         for ($i = 1; $i <= 3; $i++) {
             Parametro::create([
@@ -90,20 +99,25 @@ class ParametroController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ParametroRequest $request, Parametro $parametro): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-        // Obtener todos los registros con la misma fecha
-        $parametros = Parametro::where('fecha', $parametro->fecha)->get();
+        $ids = $request->input('id'); // Obtener los IDs de los registros a actualizar
+        $horas = $request->input('hora');
+        $ces = $request->input('ce');
+        $phs = $request->input('ph');
+        $temp_ambientes = $request->input('temp_ambiente');
+        $temp_soluciones = $request->input('temp_solucion');
 
-        // Iterar sobre los registros y actualizar con los datos del formulario
-        foreach ($parametros as $index => $registro) {
-            if (isset($request->hora[$index])) {
-                $registro->update([
-                    'hora' => $request->hora[$index],
-                    'ce' => $request->ce[$index],
-                    'ph' => $request->ph[$index],
-                    'temp_ambiente' => $request->temp_ambiente[$index],
-                    'temp_solucion' => $request->temp_solucion[$index],
+        foreach ($ids as $index => $id) {
+            $parametro = Parametro::find($id); // Buscar el parámetro por ID
+
+            if ($parametro) {
+                $parametro->update([
+                    'hora' => $horas[$index],
+                    'ce' => $ces[$index],
+                    'ph' => $phs[$index],
+                    'temp_ambiente' => $temp_ambientes[$index],
+                    'temp_solucion' => $temp_soluciones[$index],
                 ]);
             }
         }
@@ -111,6 +125,7 @@ class ParametroController extends Controller
         return Redirect::route('parametros.index')
             ->with('success', 'Parámetros actualizados correctamente.');
     }
+
 
 
     public function destroy($id): RedirectResponse

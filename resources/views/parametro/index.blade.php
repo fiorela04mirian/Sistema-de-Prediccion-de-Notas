@@ -69,11 +69,10 @@
                                     </div>
                                     @endif
                                     <div class="card-body">
-                                        <div class="table-responsive custom-scrollbar user-datatable theme-scrollbar">
+                                        <div class="table-responsive custom-scrollbar user-datatable theme-scrollbar text-center">
                                             <table class="display custom-scrollbar" id="basic-12">
                                                 <thead>
                                                     <tr>
-                                                        <th>No</th>
                                                         <th>Fecha</th>
                                                         <th>Hora</th>
                                                         <th>CE</th>
@@ -88,7 +87,6 @@
                                                     @foreach ($parametros as $fecha => $bloques)
                                                     @foreach ($bloques as $index => $bloque)
                                                     <tr>
-                                                        <td>{{ $i++ }}</td>
                                                         <td>{{ $index === 0 ? $fecha : '' }}</td> <!-- Solo la primera fila muestra la fecha -->
                                                         <td>
                                                             @foreach ($bloque as $parametro)
@@ -135,6 +133,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h4 class="modal-title" id="editParametroModalLabel{{ $parametro->id }}">{{ __('Editar Parámetros del Bloque') }}</h4>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <form action="{{ route('parametros.update', $parametro->id) }}" method="POST">
@@ -142,34 +141,35 @@
                                                                         @method('PUT')
 
                                                                         <div class="row mb-2">
-                                                                            <div class="col-md-6">
+                                                                            <div class="col-md-3">
                                                                                 <label for="fecha" class="form-label">{{ __('Fecha del Registro') }}</label>
-                                                                                <input type="date" name="fecha" class="form-control form-control-sm" value="{{ $parametro->fecha }}" required>
+                                                                                <input type="date" name="fecha" class="form-control form-control-sm" value="{{ $parametro->fecha }}" readonly>
                                                                             </div>
                                                                         </div>
 
                                                                         @foreach ($bloque as $param)
                                                                         <div class="row border rounded p-2 mb-3">
-                                                                            <div class="col-md-6 d-flex align-items-center">
+                                                                            <input type="hidden" name="id[]" value="{{ $param->id }}">
+                                                                            <div class="col-md-4 d-flex align-items-center">
                                                                                 <label for="hora" class="form-label me-2">{{ __('Hora del Registro') }}</label>
                                                                                 <input type="time" name="hora[]" class="form-control form-control-sm" value="{{ $param->hora }}" required>
                                                                             </div>
                                                                             <div class="col-md-12 d-flex pt-2">
                                                                                 <div class="me-2">
                                                                                     <label for="ce" class="form-label">{{ __('CE (dS/m)') }}</label>
-                                                                                    <input type="number" step="0.01" name="ce[]" class="form-control form-control-sm" value="{{ $param->ce }}" required>
+                                                                                    <input type="number" step="0.001" name="ce[]" class="form-control form-control-sm" value="{{ $param->ce }}" required>
                                                                                 </div>
                                                                                 <div class="me-2">
                                                                                     <label for="ph" class="form-label">{{ __('pH') }}</label>
-                                                                                    <input type="number" step="0.01" name="ph[]" class="form-control form-control-sm" value="{{ $param->ph }}" required>
+                                                                                    <input type="number" step="0.001" name="ph[]" class="form-control form-control-sm" value="{{ $param->ph }}" required>
                                                                                 </div>
                                                                                 <div class="me-2">
                                                                                     <label for="temp_ambiente" class="form-label">{{ __('Temp. Ambiente (°C)') }}</label>
-                                                                                    <input type="number" step="0.1" name="temp_ambiente[]" class="form-control form-control-sm" value="{{ $param->temp_ambiente }}" required>
+                                                                                    <input type="number" step="0.001" name="temp_ambiente[]" class="form-control form-control-sm" value="{{ $param->temp_ambiente }}" required>
                                                                                 </div>
                                                                                 <div>
                                                                                     <label for="temp_solucion" class="form-label">{{ __('Temp. Solución (°C)') }}</label>
-                                                                                    <input type="number" step="0.1" name="temp_solucion[]" class="form-control form-control-sm" value="{{ $param->temp_solucion }}" required>
+                                                                                    <input type="number" step="0.001" name="temp_solucion[]" class="form-control form-control-sm" value="{{ $param->temp_solucion }}" required>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -189,7 +189,6 @@
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>No</th>
                                                         <th>Fecha</th>
                                                         <th>Hora</th>
                                                         <th>CE</th>
@@ -233,14 +232,55 @@
                         }
                     });
 
+                    // Verificar si la fecha ya está registrada antes de enviar el formulario
+                    const fecha = form.querySelector('#fecha').value; // Obtén la fecha seleccionada
+
+                    // Llamar al backend para verificar si la fecha ya existe
+                    fetch(`/validar-fecha/${fecha}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.exists) {
+                                valid = false;
+                                alert('La fecha ya está registrada. Por favor, elige otra.');
+                                // Prevenir el envío del formulario si la fecha ya está registrada
+                                event.preventDefault();
+                            }
+
+                            // Si todo es válido, proceder con el envío del formulario
+                            if (!valid) {
+                                event.preventDefault();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al verificar la fecha:', error);
+                            event.preventDefault();
+                        });
+
                     // Si hay algún campo inválido, prevenir el envío del formulario
                     if (!valid) {
                         event.preventDefault();
                         alert('Por favor, llena todos los campos antes de guardar.');
                     }
                 });
+
+                // Restaurar los valores originales al cerrar ambos modales (crear y editar)
+                document.querySelectorAll(".modal").forEach(function(modal) {
+                    modal.addEventListener("hidden.bs.modal", function(event) {
+                        modal.querySelectorAll("input").forEach(function(input) {
+                            input.value = input.defaultValue; // Restaurar valor original
+                        });
+                    });
+                });
+
             });
         </script>
+
+
 
     </body>
 
@@ -250,44 +290,45 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="createParametroModalLabel">{{ __('Crear Parámetro Diario') }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+
             </div>
             <div class="modal-body">
                 <form id="createParametroForm" action="{{ route('parametros.store') }}" method="POST">
                     @csrf
                     <div class="row mb-2">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="fecha" class="form-label">{{ __('Fecha del Registro') }}</label>
                             <input type="date" name="fecha" class="form-control form-control-sm" id="fecha" required>
                         </div>
                     </div>
 
                     @for ($i = 1; $i <= 3; $i++)
-                        <div class="row border rounded p-2 mb-3">
-                        <div class="col-md-6 d-flex align-items-center">
+                        <div class="row border rounded p-3 mb-3">
+                        <div class="col-md-4 d-flex align-items-center">
                             <label for="hora{{ $i }}" class="form-label me-2">{{ __('Hora del Registro') }}</label>
                             <input type="time" name="hora{{ $i }}" class="form-control form-control-sm" id="hora{{ $i }}" required>
                         </div>
                         <div class="col-md-12 d-flex pt-2">
                             <div class="me-2">
                                 <label for="ce{{ $i }}" class="form-label">{{ __('CE (dS/m)') }}</label>
-                                <input type="number" step="0.01" name="ce{{ $i }}" class="form-control form-control-sm" id="ce{{ $i }}" required>
+                                <input type="number" step="0.001" name="ce{{ $i }}" class="form-control form-control-sm" id="ce{{ $i }}" required>
                             </div>
                             <div class="me-2">
                                 <label for="ph{{ $i }}" class="form-label">{{ __('pH') }}</label>
-                                <input type="number" step="0.01" name="ph{{ $i }}" class="form-control form-control-sm" id="ph{{ $i }}" required>
+                                <input type="number" step="0.001" name="ph{{ $i }}" class="form-control form-control-sm" id="ph{{ $i }}" required>
                             </div>
                             <div class="me-2">
                                 <label for="temp_amb{{ $i }}" class="form-label">{{ __('Temp. Ambiente (°C)') }}</label>
-                                <input type="number" step="0.1" name="temp_amb{{ $i }}" class="form-control form-control-sm" id="temp_amb{{ $i }}" required>
+                                <input type="number" step="0.001" name="temp_amb{{ $i }}" class="form-control form-control-sm" id="temp_amb{{ $i }}" required>
                             </div>
                             <div>
                                 <label for="temp_sol{{ $i }}" class="form-label">{{ __('Temp. Solución (°C)') }}</label>
-                                <input type="number" step="0.1" name="temp_sol{{ $i }}" class="form-control form-control-sm" id="temp_sol{{ $i }}" required>
+                                <input type="number" step="0.001" name="temp_sol{{ $i }}" class="form-control form-control-sm" id="temp_sol{{ $i }}" required>
                             </div>
                         </div>
             </div>
             @endfor
-
             <div class="text-center">
                 <button type="submit" class="btn btn-success">{{ __('Guardar Parámetros') }}</button>
             </div>

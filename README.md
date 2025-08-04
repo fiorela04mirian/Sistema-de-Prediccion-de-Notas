@@ -7,6 +7,39 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+
+---
+
+## 📸 Capturas del sistema
+
+### 🔐 Iniciar sesión
+![Iniciar sesión](screenshots/Iniciar%20sesi%C3%B3n%20en%20tu%20cuenta.png)
+
+### 🧾 Crear cuenta de usuario
+![Crear cuenta](screenshots/Crea%20tu%20cuenta.png)
+
+### 🧮 Ingresar notas del estudiante
+![Notas](screenshots/Ingresar%20Notas%20del%20Estudiante.png)
+
+### ✏️ Editar parámetros por bloque
+![Editar parámetros](screenshots/Editar%20Par%C3%A1metros%20del%20Bloque.png)
+
+### 👤 Editar usuario
+![Editar usuario](screenshots/Editar%20usuario.png)
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+- PHP 8.x – Laravel 10+
+- Bootstrap 5 – Blade templates
+- MySQL
+- Git y GitHub para control de versiones
+
+---
+
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

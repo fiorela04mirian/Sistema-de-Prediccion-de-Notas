@@ -33,7 +33,7 @@
                         <div class="page-title">
                             <div class="row">
                                 <div class="col-xl-4 col-sm-7 box-col-3">
-                                    <h3>Dashboard de Hidroponia</h3>
+                                    <h3>Dashboard de Predicciones</h3>
                                 </div>
                                 <div class="col-5 d-none d-xl-block">
                                     <!-- Page Sub Header Start-->
@@ -52,13 +52,12 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Container-fluid starts-->
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-header pb-0 card-no-border d-flex align-items-center gap-2">
-                                        <h4 class="mb-0">Registro Diario de Parámetros</h4>
+                                        <h4 class="mb-0">Registro de Notas</h4>
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createParametroModal">
                                             {{ __('Añadir') }}
                                         </button>
@@ -75,10 +74,10 @@
                                                     <tr>
                                                         <th>Fecha</th>
                                                         <th>Hora</th>
-                                                        <th>CE</th>
-                                                        <th>pH</th>
-                                                        <th>Temp Ambiente</th>
-                                                        <th>Temp Solución</th>
+                                                        <th>Nota 1</th>
+                                                        <th>Nota 2</th>
+                                                        <th>Nota 3</th>
+                                                        <th>Promedio Predicho</th>
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -95,22 +94,22 @@
                                                         </td>
                                                         <td>
                                                             @foreach ($bloque as $parametro)
-                                                            <p>{{ $parametro->ce }}</p>
+                                                            <p>{{ $parametro->nota1 }}</p>
                                                             @endforeach
                                                         </td>
                                                         <td>
                                                             @foreach ($bloque as $parametro)
-                                                            <p>{{ $parametro->ph }}</p>
+                                                            <p>{{ $parametro->nota2 }}</p>
                                                             @endforeach
                                                         </td>
                                                         <td>
                                                             @foreach ($bloque as $parametro)
-                                                            <p>{{ $parametro->temp_ambiente }}</p>
+                                                            <p>{{ $parametro->nota3 }}</p>
                                                             @endforeach
                                                         </td>
                                                         <td>
                                                             @foreach ($bloque as $parametro)
-                                                            <p>{{ $parametro->temp_solucion }}</p>
+                                                            <p>{{ $parametro->promedio_predicho }}</p>
                                                             @endforeach
                                                         </td>
                                                         <td>
@@ -156,21 +155,18 @@
                                                                             </div>
                                                                             <div class="col-md-12 d-flex pt-2">
                                                                                 <div class="me-2">
-                                                                                    <label for="ce" class="form-label">{{ __('CE (dS/m)') }}</label>
-                                                                                    <input type="number" step="0.001" name="ce[]" class="form-control form-control-sm" value="{{ $param->ce }}" required>
+                                                                                    <label for="nota1" class="form-label">{{ __('Nota 1') }}</label>
+                                                                                    <input type="number" step="0.001" name="nota1[]" class="form-control form-control-sm" value="{{ $param->nota1 }}" required>
                                                                                 </div>
                                                                                 <div class="me-2">
-                                                                                    <label for="ph" class="form-label">{{ __('pH') }}</label>
-                                                                                    <input type="number" step="0.001" name="ph[]" class="form-control form-control-sm" value="{{ $param->ph }}" required>
+                                                                                    <label for="nota2" class="form-label">{{ __('Nota 2') }}</label>
+                                                                                    <input type="number" step="0.001" name="nota2[]" class="form-control form-control-sm" value="{{ $param->nota2 }}" required>
                                                                                 </div>
                                                                                 <div class="me-2">
-                                                                                    <label for="temp_ambiente" class="form-label">{{ __('Temp. Ambiente (°C)') }}</label>
-                                                                                    <input type="number" step="0.001" name="temp_ambiente[]" class="form-control form-control-sm" value="{{ $param->temp_ambiente }}" required>
+                                                                                    <label for="nota3" class="form-label">{{ __('Nota 3') }}</label>
+                                                                                    <input type="number" step="0.001" name="nota3[]" class="form-control form-control-sm" value="{{ $param->nota3 }}" required>
                                                                                 </div>
-                                                                                <div>
-                                                                                    <label for="temp_solucion" class="form-label">{{ __('Temp. Solución (°C)') }}</label>
-                                                                                    <input type="number" step="0.001" name="temp_solucion[]" class="form-control form-control-sm" value="{{ $param->temp_solucion }}" required>
-                                                                                </div>
+                                                                                
                                                                             </div>
                                                                         </div>
                                                                         @endforeach
@@ -191,10 +187,10 @@
                                                     <tr>
                                                         <th>Fecha</th>
                                                         <th>Hora</th>
-                                                        <th>CE</th>
-                                                        <th>pH</th>
-                                                        <th>Temp Ambiente</th>
-                                                        <th>Temp Solución</th>
+                                                        <th>Nota 1</th>
+                                                        <th>Nota 2</th>
+                                                        <th>Nota 3</th>
+                                                        <th>Promedio Predicho</th>
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </tfoot>
@@ -205,10 +201,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Container-fluid Ends-->
+
                 </div>
                 <!-- footer start-->
-                @include('partials.footer')
             </div>
         </div>
         @include('partials.scripts')
@@ -289,7 +284,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="createParametroModalLabel">{{ __('Crear Parámetro Diario') }}</h4>
+                <h4 class="modal-title" id="createParametroModalLabel">{{ __('Ingresar Notas del Estudiante') }}</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
 
             </div>
@@ -311,21 +306,18 @@
                         </div>
                         <div class="col-md-12 d-flex pt-2">
                             <div class="me-2">
-                                <label for="ce{{ $i }}" class="form-label">{{ __('CE (dS/m)') }}</label>
-                                <input type="number" step="0.001" name="ce{{ $i }}" class="form-control form-control-sm" id="ce{{ $i }}" required>
+                                <label for="nota1{{ $i }}" class="form-label">{{ __('Nota 1') }}</label>
+                                <input type="number" step="0.001" name="nota1{{ $i }}" class="form-control form-control-sm" id="nota1{{ $i }}" required>
                             </div>
                             <div class="me-2">
-                                <label for="ph{{ $i }}" class="form-label">{{ __('pH') }}</label>
-                                <input type="number" step="0.001" name="ph{{ $i }}" class="form-control form-control-sm" id="ph{{ $i }}" required>
+                                <label for="nota2{{ $i }}" class="form-label">{{ __('Nota 2') }}</label>
+                                <input type="number" step="0.001" name="nota2{{ $i }}" class="form-control form-control-sm" id="nota2{{ $i }}" required>
                             </div>
                             <div class="me-2">
-                                <label for="temp_amb{{ $i }}" class="form-label">{{ __('Temp. Ambiente (°C)') }}</label>
-                                <input type="number" step="0.001" name="temp_amb{{ $i }}" class="form-control form-control-sm" id="temp_amb{{ $i }}" required>
+                                <label for="nota3{{ $i }}" class="form-label">{{ __('Nota 3') }}</label>
+                                <input type="number" step="0.001" name="nota3{{ $i }}" class="form-control form-control-sm" id="nota3{{ $i }}" required>
                             </div>
-                            <div>
-                                <label for="temp_sol{{ $i }}" class="form-label">{{ __('Temp. Solución (°C)') }}</label>
-                                <input type="number" step="0.001" name="temp_sol{{ $i }}" class="form-control form-control-sm" id="temp_sol{{ $i }}" required>
-                            </div>
+                            
                         </div>
             </div>
             @endfor

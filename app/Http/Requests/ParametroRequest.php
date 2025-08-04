@@ -28,10 +28,9 @@ class ParametroRequest extends FormRequest
         // Reglas dinámicas para los 3 conjuntos de parámetros del formulario
         for ($i = 1; $i <= 3; $i++) {
             $rules["hora{$i}"] = 'required';
-            $rules["ce{$i}"] = 'required|numeric';
-            $rules["ph{$i}"] = 'required|numeric';
-            $rules["temp_amb{$i}"] = 'required|numeric';
-            $rules["temp_sol{$i}"] = 'required|numeric';
+            $rules["nota1{$i}"] = 'required|numeric';
+            $rules["nota2{$i}"] = 'required|numeric';
+            $rules["nota3{$i}"] = 'required|numeric';
         }
 
         return $rules;

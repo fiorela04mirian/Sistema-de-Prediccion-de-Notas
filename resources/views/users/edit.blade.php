@@ -25,7 +25,7 @@
                     <div class="page-title">
                         <div class="row">
                             <div class="col-xl-4 col-sm-7 box-col-3">
-                                <h3>Dashboard de Hidroponia</h3>
+                                <h3>Dashboard de Predicciones</h3>
                             </div>
                             <div class="col-xl-3 col-sm-5 box-col-4">
                                 <ol class="breadcrumb">

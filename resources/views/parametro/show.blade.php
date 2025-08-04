@@ -29,20 +29,20 @@
                                     {{ $parametro->hora }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Ce:</strong>
-                                    {{ $parametro->ce }}
+                                    <strong>Nota 1:</strong>
+                                    {{ $parametro->nota1 }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Ph:</strong>
-                                    {{ $parametro->ph }}
+                                    <strong>Nota 2:</strong>
+                                    {{ $parametro->nota2 }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Temp Ambiente:</strong>
-                                    {{ $parametro->temp_ambiente }}
+                                    <strong>Nota 3:</strong>
+                                    {{ $parametro->nota3 }}
                                 </div>
                                 <div class="form-group mb-2 mb20">
-                                    <strong>Temp Solucion:</strong>
-                                    {{ $parametro->temp_solucion }}
+                                    <strong>Promedio Predicho :</strong>
+                                    {{ $parametro->promedio_predicho }}
                                 </div>
 
                     </div>

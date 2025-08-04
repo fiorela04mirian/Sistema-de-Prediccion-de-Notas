@@ -9,7 +9,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="../assets/images/logo/logo-icon.png" type="image/logo-icon">
     <link rel="shortcut icon" href="../assets/images/logo/logo-icon.png" type="image/logo-icon">
-    <title>Letham - Hidroponia</title>
+    <title>EPSI - Predicciones de Notas</title>
     <!-- Google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -38,7 +38,7 @@
     <!-- login page start-->
     <div class="container-fluid">
       <div class="row">
-        <div class="col-xl-7"><img class="bg-img-cover bg-center" src="../assets/images/login/2.png" alt="looginpage"></div>
+        <div class="col-xl-7"><img class="bg-img-cover bg-center" src="../assets/images/login/2.jpeg" alt="looginpage"></div>
         <div class="col-xl-5 p-0">
           <div class="login-card login-dark login-bg">
             <div>

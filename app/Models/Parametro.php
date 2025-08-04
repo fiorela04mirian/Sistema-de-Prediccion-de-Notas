@@ -30,7 +30,7 @@ class Parametro extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fecha', 'hora', 'ce', 'ph', 'temp_ambiente', 'temp_solucion'];
+    protected $fillable = ['fecha', 'hora', 'nota1', 'nota2', 'nota3', 'promedio_predicho'];
 
 
 }

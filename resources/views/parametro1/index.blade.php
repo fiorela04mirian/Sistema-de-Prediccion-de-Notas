@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    @include('partials.head') <!-- Incluye meta tags, título y enlaces CSS comunes -->
+     <!-- Incluye meta tags, título y enlaces CSS comunes -->
     <!-- CSS de jsGrid -->
     <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css" />
     <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid-theme.min.css" />
@@ -38,14 +38,13 @@
             <div class="page-body-wrapper">
 
                 <!-- Page Sidebar Start-->
-                @include('partials.sidebar')
                 <!-- Page Sidebar Ends-->
                 <div class="page-body">
                     <div class="container-fluid">
                         <div class="page-title">
                             <div class="row">
                                 <div class="col-xl-4 col-sm-7 box-col-3">
-                                    <h3>Dashboard de Hidroponia</h3>
+                                    <h3>Dashboard de Predicciones</h3>
 
                                 </div>
                                 <div class="col-5 d-none d-xl-block">

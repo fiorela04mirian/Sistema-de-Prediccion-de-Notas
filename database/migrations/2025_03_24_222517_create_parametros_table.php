@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->date('fecha')->comment('Fecha del registro de parámetros');
             $table->time('hora')->comment('Hora del registro de parámetros');
-            $table->double('ce')->nullable()->comment('Conductividad Eléctrica en dS/m');
-            $table->double('ph')->nullable()->comment('pH de la Solución Nutritiva');
-            $table->double('temp_ambiente')->nullable()->comment('Temperatura Ambiental en °C');
-            $table->double('temp_solucion')->nullable()->comment('Temperatura de la Solución Nutritiva en °C');
+            $table->double('nota1')->nullable()->comment('Primera nota');
+            $table->double('nota2')->nullable()->comment('Segunda nota');
+            $table->double('nota3')->nullable()->comment('Tercera nota');
+            $table->double('promedio_predicho')->nullable()->comment('Promedio predicho por el modelo');
+        
             $table->timestamps();
         });
     }

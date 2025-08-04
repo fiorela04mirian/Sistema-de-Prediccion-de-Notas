@@ -7,7 +7,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="../assets/images/logo/logo-icon.png" type="image/logo-icon">
     <link rel="shortcut icon" href="../assets/images/logo/logo-icon.png" type="image/logo-icon">
-    <title>Letham - Hidroponia</title>
+    <title>EPSI - Predicciones de Notas</title>
     <!-- Google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">

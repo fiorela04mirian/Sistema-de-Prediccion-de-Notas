@@ -60,13 +60,18 @@ class ParametroController extends Controller
         }
         // Recorremos las series de datos dinámicos (hora, ce, ph, etc.)
         for ($i = 1; $i <= 3; $i++) {
+            $n1 = $request->input("nota1{$i}");
+            $n2 = $request->input("nota2{$i}");
+            $n3 = $request->input("nota3{$i}");
+            $prediccion = $this->predecirNota($n1, $n2, $n3);
+
             Parametro::create([
                 'fecha' => $request->input('fecha'),  // Campo común para todos
                 'hora' => $request->input("hora{$i}"),
-                'ce' => $request->input("ce{$i}"),
-                'ph' => $request->input("ph{$i}"),
-                'temp_ambiente' => $request->input("temp_amb{$i}"),
-                'temp_solucion' => $request->input("temp_sol{$i}"),
+                'nota1' => $request->input("nota1{$i}"),
+                'nota2' => $request->input("nota2{$i}"),
+                'nota3' => $request->input("nota3{$i}"),
+                'promedio_predicho' => $prediccion,
             ]);
         }
 
@@ -103,10 +108,10 @@ class ParametroController extends Controller
     {
         $ids = $request->input('id'); // Obtener los IDs de los registros a actualizar
         $horas = $request->input('hora');
-        $ces = $request->input('ce');
-        $phs = $request->input('ph');
-        $temp_ambientes = $request->input('temp_ambiente');
-        $temp_soluciones = $request->input('temp_solucion');
+        $nota1 = $request->input('nota1');
+        $nota2 = $request->input('nota2');
+        $nota3 = $request->input('nota3');
+        $promedio_predicho = $request->input('promedio_predicho');
 
         foreach ($ids as $index => $id) {
             $parametro = Parametro::find($id); // Buscar el parámetro por ID
@@ -114,10 +119,10 @@ class ParametroController extends Controller
             if ($parametro) {
                 $parametro->update([
                     'hora' => $horas[$index],
-                    'ce' => $ces[$index],
-                    'ph' => $phs[$index],
-                    'temp_ambiente' => $temp_ambientes[$index],
-                    'temp_solucion' => $temp_soluciones[$index],
+                    'nota1' => $nota1[$index],
+                    'nota2' => $nota2[$index],
+                    'nota3' => $nota3[$index],
+                    'promedio_predicho' => $promedio_predicho[$index],
                 ]);
             }
         }
@@ -126,6 +131,13 @@ class ParametroController extends Controller
             ->with('success', 'Parámetros actualizados correctamente.');
     }
 
+    public function predecirNota($n1, $n2, $n3): float
+    {
+        $pesos = [0.30258242, 0.19750771, 0.50114373];
+        $bias = -0.0160;
+        $y = $pesos[0] * $n1 + $pesos[1] * $n2 + $pesos[2] * $n3 + $bias;
+        return round($y, 2);
+    }
 
 
     public function destroy($id): RedirectResponse
